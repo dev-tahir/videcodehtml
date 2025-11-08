@@ -1,0 +1,106 @@
+make this next js app. make todolist. also make simple landing page for app.
+
+Next.js App - AI Page Creator: Simple Prompt
+Create a Next.js 14 app (App Router) for AI-powered HTML page creation and management.
+
+## Core Features:
+
+1. **Authentication**
+   - Email/password signup/login (NextAuth.js)
+
+2. **Home Page (/)** 
+   - Dynamic landing page
+   - Basic Hero half size
+   - Create Html Page button
+   - First Row for Own users created Designs
+   - others rows shows html pages created by other users(community) in grid view (vote up and vote down buttons)
+   - option to see page shared by community in full width modal. image or screenshot will show.(with buttons duplicate this page. where user can duplicate with himself but before that there will be paid user check. only paid user can duplicate.)
+
+3. **Chat Interface (/chat or /chat/[pageId])**
+   - AI conversation for creating/editing pages
+   - vertical sidebar chat feature to see page. after model start generating code. user can change between sidebar view or full chat page view.
+   - if user comes to chat page there will be options to select models like gpt-5, claude, etc (hardcode these in page) in boxes grid under chat input which will be in center.
+   - when user typed something. and hit enter. ai will start generating code. side bar verticall on left side will show. page which is being created on right.
+   - **Agentic Mode**: AI autonomously decides what to create/edit
+   - **Line Stitching**: Edit specific lines without regenerating entire page
+   - Show current page content with line numbers
+   - AI provides targeted edits: "Replace lines 10-15 with [code]"
+   - Apply changes incrementally
+   - two models will be used. 1. agentic which will decide what to do. 2. main model selected by user which will generate code/edits.
+   - button under each message. go to this state(history page) also button on top back and forward which changes page state according to chat history.
+
+4. **Page Viewer (/view/[id])**
+   - Render HTML page content
+   - Public access if shareable enabled (if user is paid then he can not-share if user is free-bie page will be share by default)
+   - small Edit button (only owner can access edit page)
+   - page editor mode where user can edit page manually by typing. (paid user feature)
+   - page editing history.(each time user makes edit or ai). these will be shown and saved like git commit style.
+
+5. **Settings (/settings)**
+   - Manage AI API keys (OpenRouter) - Model name if user wants to use. also text that k4.5 is being used as backend agent.
+   - User profile settings, strip setting, subscription management
+   - API key encryption in database
+   - by default openrouter gemeni2.0 flash will be used and user will be asked to use his/her own openrouter api key for better experience.
+
+## Technical Stack:
+
+- Next.js 14 (App Router, Server Components)
+- PostgreSQL + Prisma (users, pages, apiKeys, pageShares)
+- NextAuth.js (email/password)
+- OpenAI SDK for AI calls
+- Tailwind CSS
+- React Hook Form + Zod validation
+
+
+## Key Features:
+
+### Line Stitching System:
+- Display page content with line numbers in chat
+- AI analyzes request and determines exact line ranges to modify
+- Returns: `{lineStart: 10, lineEnd: 15, newContent: "..."}`
+- Apply changes without full page regeneration
+- Show diff preview before applying
+
+### Agentic Mode:
+- AI decides whether to create new page or edit existing
+- AI determines which lines need changes
+- AI can make multiple edits in sequence
+- User approves or rejects AI suggestions
+
+### Sharing System:
+- by deafult page will be shareable for free-bie users. paid user can choose to share or not.
+- Generate unique shareable URL: `/view/[pageId]`
+- Public pages accessible without login
+- Paid Owner can revoke sharing anytime
+- After Page generation screenshot will be taken and shown in home page community section.
+- 
+
+## API Routes:
+
+- `/api/auth/[...nextauth]` - Authentication
+- `/api/generate` - AI page generation
+- `/api/edit` - Line-based page editing
+- `/api/pages` - CRUD operations
+- `/api/share/[pageId]` - Share management
+
+## UI Flow:
+
+1. User Lands on home grid
+2. user clicks on create page button → navigates to login/signup
+3. Chat opens (full page with input in center and model selection below)
+4. User describes page → AI starts creating HTML → chat converts to sidebar view and page is shown on right.
+5. User select "Edit or ask" on existing page vertical side bar and chat which edit or answer questions about page.
+6. User requests changes → AI provides line-based edits → Apply
+
+by default model.
+openrouter apikey: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
+model:google/gemini-2.0-flash-lite-001
+
+5 dollar subscription per month, cancel anytime.
+freebie will be allowed to create 10 pages per month.100 history entries per month.(might also delete data after 3 months if server are full)
+
+create usefull pages at end. like pricing etc. as required.
+
+create 50 list of blogs according to seo for this app. only titles. in txt file.
+
+Make it production-ready with proper error handling, loading states, and responsive design.
